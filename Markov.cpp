@@ -3,7 +3,7 @@
 
 #include "Markov.h"
 
-#define RATE 600
+#define RATE 700
 #define MAX_VAL 65536
 
 using namespace Markov;
@@ -74,7 +74,17 @@ void Process::clear() {
             chain[s][m].value = init;
         }
     }
-    load();
+}
+
+void Process::print() {
+    for (Int s=0; s < STATE_SIZE; s++) {
+        for (Int m=0; m < MOVE_SIZE; m++) {
+            Serial.print(chain[s][m].value);
+            Serial.print(", ");
+        }
+        Serial.println();
+    }
+    Serial.println();
 }
 
 Int Process::getIndex(State s) {

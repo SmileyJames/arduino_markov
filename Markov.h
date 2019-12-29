@@ -28,6 +28,7 @@ namespace Markov {
             void save();
             void load();
             void clear();
+            void print();
         private:
             Value chain[STATE_SIZE][MOVE_SIZE];
             Int getIndex(State);

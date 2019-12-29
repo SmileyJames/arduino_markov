@@ -13,6 +13,7 @@
 #define KEY_DOWN 16754775
 #define KEY_STAR 16728765
 #define KEY_HASH 16732845
+#define KEY_0    16730805
 
 struct Action {
     Markov::State state;
@@ -69,6 +70,9 @@ void loop() {
             break;
             case KEY_DOWN:
                 punishActions();
+            break;
+            case KEY_0:
+                m.print();
             break;
         }
     }
