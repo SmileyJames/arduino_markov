@@ -3,10 +3,10 @@
 #include "Track.h"
 #include "Markov.h"
 
-#define ACTION_DURATION 400
-#define ACTIONS_SIZE 60
+#define ACTION_DURATION 4000
+#define ACTIONS_SIZE 5
 
-#define IR_RECV 13
+#define IR_RECV 12
 
 #define KEY_UP   16736925
 #define KEY_DOWN 16754775
@@ -31,17 +31,16 @@ int actionsIndex = 0;
 int actionsLength = 0;
 
 
-
 void setup() {
+    Serial.begin(9600);
     irRecv.enableIRIn();
-    Track::setupTrack();
-    Move::setupMove();
-    // m = Markov::Process();
+    Track::setup();
+    Move::setup();
 }
 
 
 void loop() {
-    if (irRecv.decode(&irInput)){ 
+    if (irRecv.decode(&irInput)){
         time = millis();
         irValue = irInput.value;
         irRecv.resume();
@@ -49,15 +48,20 @@ void loop() {
         switch (irValue) {
             case KEY_STAR:
                 m.load();
+            break;
             case KEY_HASH:
                 m.save();
+            break;
             case KEY_UP:
                 rewardActions();
+            break;
             case KEY_DOWN:
                 punishActions();
+            break;
         }
     } else {
         if (millis() - time > ACTION_DURATION) {
+            time = millis();
             nextAction();
         }
     }
@@ -86,6 +90,8 @@ void rewardActions() {
         Action action = actions[i];
         m.reward(action.state, action.move);
     }
+    actionsIndex = 0;
+    actionsLength = 0;
 }
 
 void punishActions() {
@@ -93,4 +99,6 @@ void punishActions() {
         Action action = actions[i];
         m.punish(action.state, action.move);
     }
+    actionsIndex = 0;
+    actionsLength = 0;
 }

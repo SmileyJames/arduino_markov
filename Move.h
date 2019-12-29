@@ -15,7 +15,7 @@ namespace Move {
         Stop,
     };
 
-    void setupMove();
+    void setup();
     void move(Command);
 }
 

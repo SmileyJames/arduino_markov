@@ -13,7 +13,7 @@ namespace Track {
         LeftMiddleRight,
     };
 
-    void setupTrack();
+    void setup();
     Input track();
 }
 

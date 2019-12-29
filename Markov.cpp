@@ -19,12 +19,13 @@ Process::Process() {
 
 Move::Command Process::get(State state) {
     const Int s = getIndex(state);
-    int choice = random(MAX_VAL);
+    Int choice = random(0, MAX_VAL);
     for (int m=0; m < MOVE_SIZE; m++) {
-        choice -= chain[s][m].value;
-        if (choice < 0) {
+        Int val = chain[s][m].value;
+        if (choice < val) {
             return m;
         }
+        choice -= val;
     }
 }
 

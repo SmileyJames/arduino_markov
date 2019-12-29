@@ -85,7 +85,7 @@ namespace {
     }
 }
 
-void Move::setupMove() {
+void Move::setup() {
     pinMode(L_WHL_FWD, OUTPUT);
     pinMode(L_WHL_BWD, OUTPUT);
     pinMode(R_WHL_BWD, OUTPUT);
@@ -98,22 +98,39 @@ void Move::setupMove() {
 void Move::move(Command m) {
     switch (m) {
         case Forward:
+            Serial.println("Forward");
             forward();
+        break;
         case ForwardPlus:
+            Serial.println("Forward Plus");
             forwardPlus();
+        break;
         case Backward:
+            Serial.println("Backward");
             backward();
+        break;
         case LeftTurn:
+            Serial.println("Left Turn");
             leftTurn();
+        break;
         case LeftPivot:
+            Serial.println("Left Pivot");
             leftPivot();
+        break;
         case RightTurn:
+            Serial.println("Right Turn");
             rightTurn();
+        break;
         case RightPivot:
+            Serial.println("Right Pivot");
             rightPivot();
+        break;
         case Stop:
+            Serial.println("Stop");
             stop();
+        break;
         default:
             stop();
+        break;
     }
 }

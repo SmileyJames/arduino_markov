@@ -7,7 +7,7 @@
 
 using namespace Track;
 
-void Track::setupTrack() {
+void Track::setup() {
     pinMode(L_TRK, INPUT);
     pinMode(M_TRK, INPUT);
     pinMode(R_TRK, INPUT);
