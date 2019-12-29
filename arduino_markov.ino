@@ -53,6 +53,7 @@ void loop() {
                 paused = !paused;
                 if (paused) {
                     Move::stop();
+                    clearActions();
                 } else {
                     nextAction();
                 }
@@ -101,8 +102,7 @@ void rewardActions() {
         Action action = actions[i];
         m.reward(action.state, action.move);
     }
-    actionsIndex = 0;
-    actionsLength = 0;
+    clearActions();
 }
 
 void punishActions() {
@@ -110,6 +110,10 @@ void punishActions() {
         Action action = actions[i];
         m.punish(action.state, action.move);
     }
+    clearActions();
+}
+
+void clearActions() {
     actionsIndex = 0;
     actionsLength = 0;
 }
