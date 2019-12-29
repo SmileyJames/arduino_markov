@@ -8,15 +8,6 @@
 
 using namespace Markov;
 
-Process::Process() {
-    const Int init = MAX_VAL / MOVE_SIZE;
-    for (Int s=0; s < STATE_SIZE; s++) {
-        for (Int m=0; m < MOVE_SIZE; m++) {
-            chain[s][m].value = init;
-        }
-    }
-}
-
 Move::Command Process::get(State state) {
     const Int s = getIndex(state);
     Int choice = random(0, MAX_VAL);
@@ -74,6 +65,16 @@ void Process::load() {
             address += 2;
         }
     }
+}
+
+void Process::clear() {
+    const Int init = MAX_VAL / MOVE_SIZE;
+    for (Int s=0; s < STATE_SIZE; s++) {
+        for (Int m=0; m < MOVE_SIZE; m++) {
+            chain[s][m].value = init;
+        }
+    }
+    load();
 }
 
 Int Process::getIndex(State s) {

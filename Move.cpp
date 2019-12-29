@@ -77,11 +77,6 @@ namespace {
         digitalWrite(R_WHL_FWD, LOW);
         digitalWrite(R_WHL_BWD, HIGH);
     }
-
-    void stop() {
-        digitalWrite(L_WHL_SPD, LOW);
-        digitalWrite(R_WHL_SPD, LOW);
-    }
 }
 
 void Move::setup() {
@@ -92,6 +87,11 @@ void Move::setup() {
     pinMode(L_WHL_SPD, OUTPUT);
     pinMode(R_WHL_SPD, OUTPUT);
     stop();
+}
+
+void Move::stop() {
+    digitalWrite(L_WHL_SPD, LOW);
+    digitalWrite(R_WHL_SPD, LOW);
 }
 
 void Move::move(Command m) {

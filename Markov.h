@@ -22,12 +22,12 @@ namespace Markov {
 
     class Process {
         public:
-            Process();
             Move::Command get(State);
             void reward(State, Move::Command);
             void punish(State, Move::Command);
             void save();
             void load();
+            void clear();
         private:
             Value chain[STATE_SIZE][MOVE_SIZE];
             Int getIndex(State);

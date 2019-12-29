@@ -8,6 +8,7 @@
 
 #define IR_RECV 12
 
+#define KEY_OK   16712445
 #define KEY_UP   16736925
 #define KEY_DOWN 16754775
 #define KEY_STAR 16728765
@@ -22,6 +23,7 @@ IRrecv irRecv(IR_RECV);
 decode_results irInput;
 unsigned long irValue;
 unsigned long time;
+bool paused = true;
 
 Markov::Process m;
 
@@ -34,6 +36,7 @@ int actionsLength = 0;
 void setup() {
     Serial.begin(9600);
     irRecv.enableIRIn();
+    m.load();
     Track::setup();
     Move::setup();
     randomSeed(analogRead(0));
@@ -41,17 +44,24 @@ void setup() {
 
 
 void loop() {
-    if (irRecv.decode(&irInput)){
-        time = millis();
+    if (irRecv.decode(&irInput)) {
         irValue = irInput.value;
         irRecv.resume();
 
         switch (irValue) {
+            case KEY_OK:
+                paused = !paused;
+                if (paused) {
+                    Move::stop();
+                } else {
+                    nextAction();
+                }
+            break;
             case KEY_STAR:
-                m.load();
+                m.save();
             break;
             case KEY_HASH:
-                m.save();
+                m.clear();
             break;
             case KEY_UP:
                 rewardActions();
@@ -60,15 +70,15 @@ void loop() {
                 punishActions();
             break;
         }
-    } else {
-        if (millis() - time > ACTION_DURATION) {
-            time = millis();
-            nextAction();
-        }
+    }
+
+    if (!paused && (millis() - time > ACTION_DURATION)) {
+        nextAction();
     }
 }
 
 void nextAction() {
+    time = millis();
     Action a;
 
     if (actionsLength == 0) {
