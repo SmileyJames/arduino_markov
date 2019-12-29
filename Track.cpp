@@ -15,7 +15,8 @@ void Track::setup() {
 
 Input Track::track() {
     return (
-        (!digitalRead(L_TRK) & 4) |
-        (!digitalRead(M_TRK) & 2) |
-        (!digitalRead(R_TRK) & 1));
+        ((7 * !digitalRead(L_TRK)) & 4) |
+        ((7 * !digitalRead(M_TRK)) & 2) |
+        ((7 * !digitalRead(R_TRK)) & 1)
+    );
 }
