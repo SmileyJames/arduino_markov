@@ -3,7 +3,7 @@
 
 #include "Markov.h"
 
-#define RATE 400
+#define RATE 600
 #define MAX_VAL 65536
 
 using namespace Markov;

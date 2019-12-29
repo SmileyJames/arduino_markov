@@ -3,8 +3,8 @@
 #include "Track.h"
 #include "Markov.h"
 
-#define ACTION_DURATION 4000
-#define ACTIONS_SIZE 5
+#define ACTION_DURATION 200
+#define ACTIONS_SIZE 25
 
 #define IR_RECV 12
 
