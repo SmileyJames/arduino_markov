@@ -86,7 +86,7 @@ void nextAction() {
 }
 
 void rewardActions() {
-    for (int i = actionsLength; i < actionsLength; i++) {
+    for (int i = 0; i < actionsLength; i++) {
         Action action = actions[i];
         m.reward(action.state, action.move);
     }
@@ -95,7 +95,7 @@ void rewardActions() {
 }
 
 void punishActions() {
-    for (int i = actionsLength; i < actionsLength; i++) {
+    for (int i = 0; i < actionsLength; i++) {
         Action action = actions[i];
         m.punish(action.state, action.move);
     }
