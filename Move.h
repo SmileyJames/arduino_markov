@@ -8,10 +8,10 @@ namespace Move {
         Forward,
         ForwardPlus,
         Backward,
-        LeftTurn,
-        LeftPivot,
-        RightTurn,
-        RightPivot,
+        Left,
+        LeftPlus,
+        Right,
+        RightPlus,
         Stop,
     };
 
