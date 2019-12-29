@@ -36,6 +36,7 @@ void setup() {
     irRecv.enableIRIn();
     Track::setup();
     Move::setup();
+    randomSeed(analogRead(0));
 }
 
 
