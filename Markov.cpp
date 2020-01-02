@@ -22,29 +22,52 @@ Move::Command Process::get(State state) {
 }
 
 
-void Process::loss(Int s, Move::Command move, int rate) {
-    const Int loss = rate / (MOVE_SIZE - 1);
+void Process::sub(int s, int m, Int val) {
+    if (chain[s][m].value > val) {
+        chain[s][m].value -= val;
+    } else {
+        chain[s][m].value = 0;
+    }
+}
 
-    for (int m=0; m < MOVE_SIZE; m++) {
-        if (m == move) {
-            chain[s][m].value += rate;
-        } else {
-            chain[s][m].value -= loss;
-        }
+
+void Process::add(int s, int m, Int val) {
+    if (chain[s][m].value < MAX_VAL - val) {
+        chain[s][m].value += val;
+    } else {
+        chain[s][m].value = MAX_VAL;
     }
 }
 
 
 void Process::reward(State state, Move::Command move, int index) {
     const Int s = getIndex(state);
-    const int rate = min(MAX_VAL - chain[s][move].value, RATE / index);
-    loss(s, move, rate);
+
+    const int rate = RATE / index;
+    const Int loss = rate / (MOVE_SIZE - 1);
+
+    for (int m=0; m < MOVE_SIZE; m++) {
+        if (m == move) {
+            add(s, m, rate);
+        } else {
+            sub(s, m, loss);
+        }
+    }
 }
 
 void Process::punish(State state, Move::Command move, int index) {
     const Int s = getIndex(state);
-    const int rate = max(chain[s][move].value - MAX_VAL, RATE / (index * -1));
-    loss(s, move, rate);
+
+    const int rate = RATE / index;
+    const Int loss = rate / (MOVE_SIZE - 1);
+
+    for (int m=0; m < MOVE_SIZE; m++) {
+        if (m == move) {
+            sub(s, m, rate);
+        } else {
+            add(s, m, loss);
+        }
+    }
 }
 
 void Process::save() {

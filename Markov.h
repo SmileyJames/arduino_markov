@@ -30,7 +30,8 @@ namespace Markov {
             void clear();
             void print();
         private:
-            void loss(Int, Move::Command, int);
+            void sub(int s, int m, Int val);
+            void add(int s, int m, Int val);
             Value chain[STATE_SIZE][MOVE_SIZE];
             Int getIndex(State);
     };
