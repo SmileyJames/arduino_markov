@@ -18,31 +18,33 @@ Move::Command Process::get(State state) {
         }
         choice -= val;
     }
+    return MOVE_SIZE - 1;
 }
 
 
-void Process::reward(State state, Move::Command move) {
-    const Int s = getIndex(state);
-    const Int loss = RATE / (MOVE_SIZE - 1);
+void Process::loss(Int s, Move::Command move, int rate) {
+    const Int loss = rate / (MOVE_SIZE - 1);
+
     for (int m=0; m < MOVE_SIZE; m++) {
         if (m == move) {
-            chain[s][m].value += RATE;
+            chain[s][m].value += rate;
         } else {
             chain[s][m].value -= loss;
         }
     }
 }
 
-void Process::punish(State state, Move::Command move) {
+
+void Process::reward(State state, Move::Command move, int index) {
     const Int s = getIndex(state);
-    const Int loss = RATE / (MOVE_SIZE - 1);
-    for (int m=0; m < MOVE_SIZE; m++) {
-        if (m == move) {
-            chain[s][m].value -= RATE;
-        } else {
-            chain[s][m].value += loss;
-        }
-    }
+    const int rate = min(MAX_VAL - chain[s][move].value, RATE / index);
+    loss(s, move, rate);
+}
+
+void Process::punish(State state, Move::Command move, int index) {
+    const Int s = getIndex(state);
+    const int rate = max(chain[s][move].value - MAX_VAL, RATE / (index * -1));
+    loss(s, move, rate);
 }
 
 void Process::save() {
