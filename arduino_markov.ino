@@ -104,7 +104,7 @@ void nextAction() {
 void rewardActions() {
     for (int i = 0; i < actionsLength; i++) {
         Action action = actions[i];
-        m.reward(action.state, action.move, actionsLength - i);
+        m.loss(action.state, action.move, actionsLength - i);
     }
     clearActions();
 }
@@ -112,7 +112,7 @@ void rewardActions() {
 void punishActions() {
     for (int i = 0; i < actionsLength; i++) {
         Action action = actions[i];
-        m.punish(action.state, action.move, actionsLength - i);
+        m.loss(action.state, action.move, i - actionsLength);
     }
     clearActions();
 }

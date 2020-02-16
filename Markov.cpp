@@ -3,7 +3,7 @@
 
 #include "Markov.h"
 
-#define RATE 700
+#define RATE 100
 #define MAX_VAL 65536
 
 using namespace Markov;
@@ -22,52 +22,28 @@ Move::Command Process::get(State state) {
 }
 
 
-void Process::sub(int s, int m, Int val) {
-    if (chain[s][m].value > val) {
-        chain[s][m].value -= val;
-    } else {
-        chain[s][m].value = 0;
-    }
-}
-
-
-void Process::add(int s, int m, Int val) {
-    if (chain[s][m].value < MAX_VAL - val) {
-        chain[s][m].value += val;
-    } else {
-        chain[s][m].value = MAX_VAL;
-    }
-}
-
-
-void Process::reward(State state, Move::Command move, int index) {
+void Process::loss(State state, Move::Command move, int adjustment) {
     const Int s = getIndex(state);
-
-    const int rate = RATE / index;
-    const Int loss = rate / (MOVE_SIZE - 1);
+    
+    const int balance = RATE / adjustment;
+    int change = 0;
 
     for (int m=0; m < MOVE_SIZE; m++) {
-        if (m == move) {
-            add(s, m, rate);
-        } else {
-            sub(s, m, loss);
+        if (m != move) {
+
+            int b = balance;
+            if (b > 0 && chain[s][m].value < b) {
+                b = chain[s][m].value;
+            } else if (b < 0 && chain[s][m].value > MAX_VAL + b) {
+                b = chain[s][m].value - MAX_VAL;
+            }
+
+            chain[s][m].value -= b;
+            change += b;
         }
     }
-}
 
-void Process::punish(State state, Move::Command move, int index) {
-    const Int s = getIndex(state);
-
-    const int rate = RATE / index;
-    const Int loss = rate / (MOVE_SIZE - 1);
-
-    for (int m=0; m < MOVE_SIZE; m++) {
-        if (m == move) {
-            sub(s, m, rate);
-        } else {
-            add(s, m, loss);
-        }
-    }
+    chain[s][move].value += change;
 }
 
 void Process::save() {
